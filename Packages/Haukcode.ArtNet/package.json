@@ -1,0 +1,20 @@
+{
+  "displayName": "Haukcode ArtNet",
+  "name": "haukcode.artnet",
+  "version": "1.2.1",
+  "unity": "2023.3",
+  "description": "ArtNet library for C#. Based on the abandoned Architecture for Control Networks (ACN) project codebase. Supports ArtTrigger messages and includes samples.",
+  "keywords": [
+    "artnet"
+  ],
+  "category": "Libraries",
+  "repository": {
+    "url": "https://github.com/HakanL/Haukcode.ArtNet.git",
+    "type": "git",
+    "revision": "ae41aeb3decc7ce7714662cc91f6718037050f2c"
+  },
+    "author": {
+      "name": "Hakan Lindestaf"
+  },
+  "license": "MIT"
+}
