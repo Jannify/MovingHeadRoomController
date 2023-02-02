@@ -1,0 +1,17 @@
+{
+  "name": "sugi-cho.artnet.unity",
+  "version": "1.0.0",
+  "displayName": "ArtNet.Unity",
+  "unity": "2021.3",
+  "description": "ArtNet library for Unity(C#).",
+  "documentationUrl": "https://github.com/sugi-cho/ArtNet.Unity",
+  "keywords": [
+    "artnet",
+	"dmx"
+  ],
+  "author": {
+    "name": "Hironori Sugino",
+    "email": "hi@sugi.cc",
+    "url": "https://github.com/sugi-cho"
+  }
+}
