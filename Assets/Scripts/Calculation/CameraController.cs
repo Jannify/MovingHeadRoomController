@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -23,9 +22,6 @@ public class CameraController : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 200))
         {
-            Debug.Log(hit.transform.name);
-            Debug.Log("hit");
-
             Room.MoveMovingHeads(hit.point);
         }
 

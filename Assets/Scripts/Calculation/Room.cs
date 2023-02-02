@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +5,10 @@ public class Room : MonoBehaviour
 {
     private static Room instance;
 
-    private List<MovingHead> movingHeads = new();
+    [SerializeField] private DmxController controller;
+    [SerializeField] private List<Entour_DMXMovingHead> movingHeads = new();
 
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         if (instance)
         {
@@ -20,13 +19,13 @@ public class Room : MonoBehaviour
         instance = this;
     }
 
-
-
-    public static void RegisterMovingHead(MovingHead mh) => instance.movingHeads.Add(mh);
-    public static void DeregisterMovingHead(MovingHead mh) => instance.movingHeads.Remove(mh);
-
     public static void MoveMovingHeads(Vector3 point)
     {
-        instance.movingHeads.ForEach(x => x.RotateToPoint(point));
+        instance.controller.StartSend(2);
+        instance.movingHeads.ForEach(x =>
+        {
+            instance.controller.AppendSend(x, x.RotateToPoint(point));
+        });
+        instance.controller.EndSend(2);
     }
 }

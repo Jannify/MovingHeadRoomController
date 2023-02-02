@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
-/contentModel.xml
 /projectSettingsUpdater.xml
+/.idea.MovingHeadRoomController.iml
+/contentModel.xml
 /modules.xml
-/.idea.MHC.iml
