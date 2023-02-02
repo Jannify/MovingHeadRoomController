@@ -9,7 +9,7 @@ public class RGB_DMXLight : DMXDevice
     [SerializeField] private int BlueAddress = 2;
 
     [Header("Components")]
-    [SerializeField] private Light light;
+    [SerializeField] private Light dmxLight;
 
     public override int NumChannels => 3;
 
@@ -17,17 +17,17 @@ public class RGB_DMXLight : DMXDevice
     {
         base.SetData(dmxData);
 
-        Color color = light.color;
+        Color color = dmxLight.color;
 
         color.r = dmxData[RedAddress] / 256f;
         color.g = dmxData[GreenAddress] / 256f;
         color.b = dmxData[BlueAddress] / 256f;
 
-        light.color = color;
+        dmxLight.color = color;
     }
 
     private void OnValidate()
     {
-        light = GetComponent<Light>();
+        dmxLight = GetComponent<Light>();
     }
 }
