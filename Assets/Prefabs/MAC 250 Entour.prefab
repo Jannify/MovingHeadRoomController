@@ -160,8 +160,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 3
-  m_Range: 100
+  m_Intensity: 2
+  m_Range: 50
   m_SpotAngle: 17.5
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -349,7 +349,7 @@ MonoBehaviour:
   panRange: 540
   tiltRange: 257
   invertPan: 0
-  intensityMultiply: 3
+  intensityMultiply: 2
   panTarget: 0
   tiltTarget: 0
   panTargetDMX: 0
