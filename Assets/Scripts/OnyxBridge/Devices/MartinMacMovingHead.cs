@@ -4,8 +4,6 @@ using Utils;
 
 public abstract class MartinMacMovingHead : DMXDevice
 {
-    public override int NumChannels => 15;
-
     [Header("Components")]
     [SerializeField] private Transform rootRotator;
     [SerializeField] private Transform panRotator;

@@ -2,6 +2,8 @@
 {
     public class KryptonMovingHead : MartinMacMovingHead
     {
+        public override int NumChannels => 14;
+
         private void Awake()
         {
             IntCh = 1;

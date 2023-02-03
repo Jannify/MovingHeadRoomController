@@ -13,8 +13,8 @@ public class DmxController : MonoBehaviour
     private bool useBroadcast;
 
     [SerializeField] private bool isServer;
-    [SerializeField] private string remoteIP = "localhost";
-    [SerializeField] private string remoteSubnetMask = "255.255.255.0";
+    [SerializeField, ReadOnlyField] private string remoteIP = "localhost";
+    [SerializeField, ReadOnlyField] private string remoteSubnetMask = "255.255.255.0";
 
     private ArtNetSocket artnet;
     private IPEndPoint remote;
@@ -26,8 +26,12 @@ public class DmxController : MonoBehaviour
     private ArtNetDmxPacket latestReceivedDMX;
 
     [SerializeField, ReadOnlyField] private ArtNetDmxPacket dmxToSend;
-    [SerializeField, ReadOnlyField] private byte[] _dmxData;
     private readonly Dictionary<int, byte[]> dmxDataMap = new();
+
+    public bool IsReadyToSend(short sourceUniverse)
+    {
+        return artnet.PortOpen && dmxDataMap.ContainsKey(sourceUniverse - 1);
+    }
 
     public void StartSend(short sourceUniverse, short targetUniverse = 5)
     {
@@ -63,6 +67,11 @@ public class DmxController : MonoBehaviour
 
     private void Start()
     {
+        ResetDMXValuesInDevices();
+
+        remoteIP = SettingsManager.Settings.IP;
+        remoteSubnetMask = SettingsManager.Settings.SubMask;
+
         artnet = new ArtNetSocket();
 
         artnet.EnableBroadcast = useBroadcast;
@@ -92,8 +101,6 @@ public class DmxController : MonoBehaviour
         }
 
         ArtNetDmxPacket packet = latestReceivedDMX = e.Packet as ArtNetDmxPacket;
-
-        if (packet.DmxData != _dmxData) _dmxData = packet.DmxData;
 
         short universe = packet.Universe;
         if (dmxDataMap.ContainsKey(universe))
@@ -125,6 +132,17 @@ public class DmxController : MonoBehaviour
                 {
                     d.SetData(dmxData.Skip(d.startChannel - 1).Take(d.NumChannels).ToArray());
                 }
+            }
+        }
+    }
+
+    private void ResetDMXValuesInDevices()
+    {
+        foreach (UniverseDevices universe in universes)
+        {
+            foreach (DMXDevice d in universe.devices)
+            {
+                d.SetData(new byte[512]);
             }
         }
     }
@@ -170,7 +188,7 @@ public class DmxController : MonoBehaviour
                 {
                     //d.startChannel = startChannel;
                     startChannel += d.NumChannels;
-                    d.name = $"{d.GetType()}:({universe}, {d.startChannel:d3}-{d.startChannel + d.NumChannels - 1:d3})";
+                    d.name = $"{d.GetType().Name.Split('.').Last()}:({universe}, {d.startChannel:d3}-{d.startChannel + d.NumChannels - 1:d3})";
                 }
 
             if (512 < startChannel)

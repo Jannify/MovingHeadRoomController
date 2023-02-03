@@ -2,6 +2,8 @@
 {
     public class EntourMovingHead : MartinMacMovingHead
     {
+        public override int NumChannels => 15;
+
         private void Awake()
         {
             IntCh = 1;
