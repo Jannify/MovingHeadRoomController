@@ -27,7 +27,7 @@ public class DmxController : MonoBehaviour
 
     [SerializeField, ReadOnlyField] private ArtNetDmxPacket dmxToSend;
     [SerializeField, ReadOnlyField] private byte[] _dmxData;
-    private Dictionary<int, byte[]> dmxDataMap = new();
+    private readonly Dictionary<int, byte[]> dmxDataMap = new();
 
     public void StartSend(short sourceUniverse, short targetUniverse = 5)
     {

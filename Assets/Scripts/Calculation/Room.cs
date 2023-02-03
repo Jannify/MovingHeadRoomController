@@ -7,7 +7,7 @@ public class Room : MonoBehaviour
     public static Transform Transform => instance.transform;
 
     [SerializeField] private DmxController controller;
-    [SerializeField] private List<Entour_DMXMovingHead> movingHeads = new();
+    [SerializeField] private List<MartinMacMovingHead> controllingMovingHeads = new();
 
     private void Awake()
     {
@@ -22,8 +22,9 @@ public class Room : MonoBehaviour
 
     public static void MoveMovingHeads(Vector3 point)
     {
+        //instance.movingHeads.ForEach(x => x.RotateToPoint(point));
         instance.controller.StartSend(2);
-        instance.movingHeads.ForEach(x => instance.controller.AppendSend(x, x.RotateToPoint(point)));
+        instance.controllingMovingHeads.ForEach(x => instance.controller.AppendSend(x, x.RotateToPoint(point)));
         instance.controller.EndSend(2);
     }
 }

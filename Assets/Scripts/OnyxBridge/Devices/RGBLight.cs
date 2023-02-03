@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Light))]
-public class RGB_DMXLight : DMXDevice
+public class RGBLight : DMXDevice
 {
     [Header("DMX Addresses")]
     [SerializeField] private int RedAddress = 0;
