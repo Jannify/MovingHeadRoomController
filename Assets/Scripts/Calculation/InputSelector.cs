@@ -6,15 +6,12 @@ namespace Calculation
     public class InputSelector : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI selectText;
+        [SerializeField] private BasicInputBehaviour[] inputs;
 
-        private IInput[] inputs;
-        private int index = 1;
-
+        private int index = 0;
 
         private void Awake()
         {
-            inputs = GetComponents<IInput>();
-
             UpdateInput();
         }
 
@@ -37,16 +34,15 @@ namespace Calculation
             for (int i = 0; i < inputs.Length; i++)
             {
                 var input = inputs[i];
-                input.SetEnabled(this.index == i);
+                input.enabled = this.index == i;
             }
 
             selectText.text = "Input: " + inputs[index].Name;
         }
     }
 
-    public interface IInput
+    public abstract class BasicInputBehaviour : MonoBehaviour
     {
-        public string Name { get; }
-        public void SetEnabled(bool value);
+        public abstract string Name { get; }
     }
 }

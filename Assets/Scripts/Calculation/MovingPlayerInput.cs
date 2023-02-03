@@ -1,8 +1,10 @@
 ﻿using Calculation;
 using UnityEngine;
 
-public class MovingPlayerInput : MonoBehaviour, IInput
+public class MovingPlayerInput : BasicInputBehaviour
 {
+    public override string Name => "Joystick";
+
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private Vector3 spawnPosition;
     [SerializeField] private float movingThreshold;
@@ -29,8 +31,4 @@ public class MovingPlayerInput : MonoBehaviour, IInput
             Room.MoveMovingHeads(player.transform.position);
         }
     }
-
-    public string Name => "Joystick";
-
-    public void SetEnabled(bool value) => enabled = value;
 }

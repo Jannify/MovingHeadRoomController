@@ -1,8 +1,10 @@
 ﻿using Calculation;
 using UnityEngine;
 
-public class DirectCameraInput : MonoBehaviour, IInput
+public class DirectCameraInput : BasicInputBehaviour
 {
+    public override string Name => "Cursor";
+
     private Camera mainCamera;
 
     private void Start()
@@ -21,7 +23,4 @@ public class DirectCameraInput : MonoBehaviour, IInput
             }
         }
     }
-
-    public string Name => "Cursor";
-    public void SetEnabled(bool value) => enabled = value;
 }

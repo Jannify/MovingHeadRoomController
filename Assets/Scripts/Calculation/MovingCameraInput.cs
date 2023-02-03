@@ -3,8 +3,10 @@ using Calculation;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MovingCameraInput : MonoBehaviour, IInput
+public class MovingCameraInput : BasicInputBehaviour
 {
+    public override string Name => "Mouse";
+
     [SerializeField] private float panMoveSpeed = 2f;
     [SerializeField] private float tiltMoveSpeed = 1f;
     [SerializeField] private float panAngle = 90f;
@@ -40,9 +42,6 @@ public class MovingCameraInput : MonoBehaviour, IInput
         }
     }
 
-    public string Name => "Mouse";
-    public void SetEnabled(bool value) => enabled = value;
-
     private void OnEnable()
     {
         Cursor.visible = false;
@@ -55,5 +54,6 @@ public class MovingCameraInput : MonoBehaviour, IInput
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         cursorImage.enabled = false;
+        cameraRotator.localRotation = Quaternion.identity;
     }
 }
