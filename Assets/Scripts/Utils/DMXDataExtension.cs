@@ -2,6 +2,11 @@
 {
     public static class DMXDataExtension
     {
+        public static float ReadPercentage(this byte[] array, int index)
+        {
+            return array[index] / 255f;
+        }
+
         public static int ReadExtendedValue(this byte[] array, int startIndex)
         {
             return (array[startIndex] << 8) | array[startIndex + 1];

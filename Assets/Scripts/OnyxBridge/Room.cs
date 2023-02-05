@@ -24,7 +24,7 @@ public class Room : MonoBehaviour
 
     public static void MoveMovingHeads(Vector3 point)
     {
-        if (SettingsManager.Settings.SendData && instance.controller.IsReadyToSend(instance.universe))
+        if (SettingsManager.Settings.SendData && SendingOverride.ShouldSend && instance.controller.IsReadyToSend(instance.universe))
         {
             instance.controller.StartSend(instance.universe);
             instance.controllingMovingHeads.ForEach(x => instance.controller.AppendSend(x, x.RotateToPoint(point)));
