@@ -17,6 +17,11 @@ namespace ArtNet.IO
             return (short)IPAddress.NetworkToHostOrder(ReadInt16());
         }
 
+        public ushort ReadNetworkU16()
+        {
+            return (ushort)IPAddress.NetworkToHostOrder(ReadInt16());
+        }
+
         public int ReadNetwork32()
         {
             return (int)IPAddress.NetworkToHostOrder(ReadInt32());

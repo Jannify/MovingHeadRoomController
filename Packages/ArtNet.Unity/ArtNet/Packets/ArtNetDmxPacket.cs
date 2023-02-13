@@ -19,7 +19,7 @@ namespace ArtNet.Packets
         }
 
         #region Packet Properties
-        
+
         private byte sequence = 0;
 
         public byte Sequence
@@ -27,7 +27,7 @@ namespace ArtNet.Packets
             get { return sequence; }
             set { sequence = value; }
         }
-        
+
         private byte physical = 0;
 
         public byte Physical
@@ -36,7 +36,9 @@ namespace ArtNet.Packets
             set { physical = value; }
         }
 
+#if UNITY_ENGINE
         [UnityEngine.SerializeField]
+#endif
         private short universe = 0;
 
         public short Universe
@@ -55,7 +57,9 @@ namespace ArtNet.Packets
             }
         }
 
+#if UNITY_ENGINE
         [UnityEngine.SerializeField]
+#endif
         private byte[] dmxData = null;
 
         public byte[] DmxData

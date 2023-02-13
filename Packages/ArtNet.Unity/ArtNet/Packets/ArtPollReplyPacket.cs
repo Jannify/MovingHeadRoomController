@@ -1,4 +1,4 @@
-﻿using ArtNet.Enums;
+using ArtNet.Enums;
 using ArtNet.IO;
 using ArtNet.Sockets;
 using System;
@@ -6,12 +6,48 @@ using System;
 namespace ArtNet.Packets
 {
     [Flags]
-    public enum PollReplyStatus
+    public enum PollReplyStatus : byte
     {
-        None = 0,
-        UBEA = 1,
-        RdmCapable = 2,
-        ROMBoot = 4
+        UBEA_SUPPORT = 0b00000001,
+        RDM_CAPABLE = 0b00000010,
+        ROM_BOOT = 0b00000100,
+
+        PORTADDRESS_FRONTPANNEL = 0b00010000,
+        PORTADDRESS_NETWORK = 0b00100000,
+
+        FRONTPANNEL_LOCATE= 0b01000000,
+        FRONTPANNEL_MUTE= 0b10000000,
+        FRONTPANNEL_NORMAL= 0b11000000,
+    }
+
+    [Flags]
+    public enum PollReplyStatus2 : byte
+    {
+        WEB_SITE_AVAILABLE = 0b00000001,
+        DHCP = 0b00000010,
+        DHCP_CAPABLE = 0b00000100,
+        ART_NET_3_PORTS = 0b00001000
+    }
+
+    public enum PollReplyNodeReport : byte
+    {
+        RcDebug = 0x0000,
+        RcPowerOk = 0x0001,
+        RcPowerFail = 0x0002,
+        RcSocketWr1 = 0x0003,
+        RcParseFail = 0x0004,
+        RcUdpFail = 0x0005,
+        RcShNameOk = 0x0006,
+        RcLoNameOk = 0x0007,
+        RcDmxError = 0x0008,
+        RcDmxUdpFull = 0x0009,
+        RcDmxRxFull = 0x000a,
+        RcSwitchErr = 0x000b,
+        RcConfigErr = 0x000c,
+        RcDmxShort = 0x000d,
+        RcFirmwareFail = 0x000e,
+        RcUserFail = 0x000f,
+        RcFactoryRes = 0x0010
     }
 
     public class ArtPollReplyPacket : ArtNetPacket
@@ -33,7 +69,7 @@ namespace ArtNet.Packets
 
         public byte[] IpAddress
         {
-            get { return ipAddress; }
+            get => ipAddress;
             set
             {
                 if (value.Length != 4)
@@ -43,101 +79,109 @@ namespace ArtNet.Packets
             }
         }
 
-        private short port = ArtNetSocket.Port;
+        private ushort port = ArtNetSocket.Port;
 
-        public short Port
+        public ushort Port
         {
-            get { return port; }
-            set { port = value; }
+            get => port;
+            set => port = value;
         }
 
-        private short firmwareVersion = 0;
+        private ushort firmwareVersion = 0;
 
-        public short FirmwareVersion
+        public ushort FirmwareVersion
         {
-            get { return firmwareVersion; }
-            set { firmwareVersion = value; }
+            get => firmwareVersion;
+            set => firmwareVersion = value;
         }
 
+        private byte netSwitch = 0;
 
-
-        private short subSwitch = 0;
-
-        public short SubSwitch
+        public byte NetSwitch
         {
-            get { return subSwitch; }
-            set { subSwitch = value; }
+            get => netSwitch;
+            set => netSwitch = value;
         }
 
-        private short oem = 0xff;
+        private byte subSwitch = 0;
 
-        public short Oem
+        public byte SubSwitch
         {
-            get { return oem; }
-            set { oem = value; }
+            get => subSwitch;
+            set => subSwitch = value;
+        }
+
+        private ushort oem = 0xff;
+
+        public ushort Oem
+        {
+            get => oem;
+            set => oem = value;
         }
 
         private byte ubeaVersion = 0;
 
         public byte UbeaVersion
         {
-            get { return ubeaVersion; }
-            set { ubeaVersion = value; }
+            get => ubeaVersion;
+            set => ubeaVersion = value;
         }
 
         private PollReplyStatus status = 0;
 
         public PollReplyStatus Status
         {
-            get { return status; }
-            set { status = value; }
+            get => status;
+            set => status = value;
         }
 
         private short estaCode = 0;
 
         public short EstaCode
         {
-            get { return estaCode; }
-            set { estaCode = value; }
+            get => estaCode;
+            set => estaCode = value;
         }
 
         private string shortName = string.Empty;
 
         public string ShortName
         {
-            get { return shortName; }
-            set { shortName = value; }
+            get => shortName;
+            set => shortName = value;
         }
 
         private string longName = string.Empty;
 
         public string LongName
         {
-            get { return longName; }
-            set { longName = value; }
+            get => longName;
+            set => longName = value;
         }
 
         private string nodeReport = string.Empty;
 
         public string NodeReport
         {
-            get { return nodeReport; }
-            set { nodeReport = value; }
+            get => nodeReport;
+            set => nodeReport = value;
         }
 
-        private short portCount = 0;
+        private static int nodeReportIncrement = 0;
 
-        public short PortCount
+        private ushort portCount = 0;
+
+        public ushort PortCount
         {
-            get { return portCount; }
-            set { portCount = value; }
+            get => portCount;
+            set => portCount = value;
         }
 
         private byte[] portTypes = new byte[4];
 
         public byte[] PortTypes
         {
-            get { return portTypes; }
+            get => portTypes;
             set
             {
                 if (value.Length != 4)
@@ -151,7 +195,7 @@ namespace ArtNet.Packets
 
         public byte[] GoodInput
         {
-            get { return goodInput; }
+            get => goodInput;
             set
             {
                 if (value.Length != 4)
@@ -165,7 +209,7 @@ namespace ArtNet.Packets
 
         public byte[] GoodOutput
         {
-            get { return goodOutput; }
+            get => goodOutput;
             set
             {
                 if (value.Length != 4)
@@ -179,55 +223,55 @@ namespace ArtNet.Packets
 
         public byte[] SwIn
         {
-            get { return swIn; }
-            set { swIn = value; }
+            get => swIn;
+            set => swIn = value;
         }
 
         private byte[] swOut = new byte[4];
 
         public byte[] SwOut
         {
-            get { return swOut; }
-            set { swOut = value; }
+            get => swOut;
+            set => swOut = value;
         }
 
         private byte swVideo = 0;
 
         public byte SwVideo
         {
-            get { return swVideo; }
-            set { swVideo = value; }
+            get => swVideo;
+            set => swVideo = value;
         }
 
         private byte swMacro = 0;
 
         public byte SwMacro
         {
-            get { return swMacro; }
-            set { swMacro = value; }
+            get => swMacro;
+            set => swMacro = value;
         }
 
         private byte swRemote = 0;
 
         public byte SwRemote
         {
-            get { return swRemote; }
-            set { swRemote = value; }
+            get => swRemote;
+            set => swRemote = value;
         }
 
         private byte style = 0;
 
         public byte Style
         {
-            get { return style; }
-            set { style = value; }
+            get => style;
+            set => style = value;
         }
 
         private byte[] macAddress = new byte[6];
 
         public byte[] MacAddress
         {
-            get { return macAddress; }
+            get => macAddress;
             set
             {
                 if (value.Length != 6)
@@ -241,7 +285,7 @@ namespace ArtNet.Packets
 
         public byte[] BindIpAddress
         {
-            get { return bindIpAddress; }
+            get => bindIpAddress;
             set
             {
                 if (value.Length != 4)
@@ -255,16 +299,16 @@ namespace ArtNet.Packets
 
         public byte BindIndex
         {
-            get { return bindIndex; }
-            set { bindIndex = value; }
+            get => bindIndex;
+            set => bindIndex = value;
         }
 
-        private byte status2 = 0;
+        private PollReplyStatus2 status2 = 0;
 
-        public byte Status2
+        public PollReplyStatus2 Status2
         {
-            get { return status2; }
-            set { status2 = value; }
+            get => status2;
+            set => status2 = value;
         }
 
 
@@ -296,6 +340,16 @@ namespace ArtNet.Packets
             return universe;
         }
 
+        public static string GetNodeReport(PollReplyNodeReport report, string message)
+        {
+            if (nodeReportIncrement > 9999)
+            {
+                nodeReportIncrement -= 9999;
+            }
+
+            return $"#{((byte)report):X4} [{nodeReportIncrement++:0000}] {message}";
+        }
+
         #endregion
 
         public override void ReadData(ArtNetBinaryReader data)
@@ -303,17 +357,18 @@ namespace ArtNet.Packets
             base.ReadData(data);
 
             IpAddress = data.ReadBytes(4);
-            Port = data.ReadInt16();
-            FirmwareVersion = data.ReadNetwork16();
-            SubSwitch = data.ReadNetwork16();
-            Oem = data.ReadNetwork16();
+            Port = data.ReadUInt16();
+            FirmwareVersion = data.ReadNetworkU16();
+            NetSwitch = data.ReadByte();
+            SubSwitch = data.ReadByte();
+            Oem = data.ReadNetworkU16();
             UbeaVersion = data.ReadByte();
             Status = (PollReplyStatus)data.ReadByte();
             EstaCode = data.ReadNetwork16();
             ShortName = data.ReadNetworkString(18);
             LongName = data.ReadNetworkString(64);
             NodeReport = data.ReadNetworkString(64);
-            PortCount = data.ReadNetwork16();
+            PortCount = data.ReadNetworkU16();
             PortTypes = data.ReadBytes(4);
             GoodInput = data.ReadBytes(4);
             GoodOutput = data.ReadBytes(4);
@@ -327,7 +382,7 @@ namespace ArtNet.Packets
             MacAddress = data.ReadBytes(6);
             BindIpAddress = data.ReadBytes(4);
             BindIndex = data.ReadByte();
-            Status2 = data.ReadByte();
+            Status2 = (PollReplyStatus2)data.ReadByte();
         }
 
         public override void WriteData(ArtNetBinaryWriter data)
@@ -337,7 +392,8 @@ namespace ArtNet.Packets
             data.Write(IpAddress);
             data.Write(Port);
             data.WriteNetwork(FirmwareVersion);
-            data.WriteNetwork(SubSwitch);
+            data.Write(NetSwitch);
+            data.Write(SubSwitch);
             data.WriteNetwork(Oem);
             data.Write(UbeaVersion);
             data.Write((byte)Status);
@@ -359,7 +415,7 @@ namespace ArtNet.Packets
             data.Write(MacAddress);
             data.Write(BindIpAddress);
             data.Write(BindIndex);
-            data.Write(Status2);
+            data.Write((byte)Status2);
             data.Write(new byte[208]);
         }
     }

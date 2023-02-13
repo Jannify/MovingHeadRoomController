@@ -1,13 +1,26 @@
-﻿using ArtNet.Enums;
+﻿using System;
+using ArtNet.Enums;
 using ArtNet.IO;
 
 namespace ArtNet.Packets
 {
+    [Flags]
+    public enum ArtPollFlags : byte
+    {
+        DEFAULT = 0b00110000,
+        SEND_REPLY_EVERYTIME = 0b00000010,
+        DIAGNOSTIC_MESSAGES = 0b00000100,
+        DIAGNOSTIC_MESSAGES_UNICAST = 0b00001000,
+        VLC_TRANSMISSION = 0b00010000,
+        TARGET_MODE = 0b00100000
+    }
+
     public class ArtPollPacket : ArtNetPacket
     {
-        public ArtPollPacket()
+        public ArtPollPacket(ArtPollFlags flags)
             : base(ArtNetOpCodes.Poll)
         {
+            Flags = flags;
         }
 
         public ArtPollPacket(ArtNetRecieveData data)
@@ -18,12 +31,12 @@ namespace ArtNet.Packets
 
         #region Packet Properties
 
-        private byte talkToMe = 0;
+        private ArtPollFlags flags = 0;
 
-        public byte TalkToMe
+        public ArtPollFlags Flags
         {
-            get { return talkToMe; }
-            set { talkToMe = value; }
+            get => flags;
+            set => flags = value;
         }
 
         #endregion
@@ -32,15 +45,17 @@ namespace ArtNet.Packets
         {
             base.ReadData(data);
 
-            TalkToMe = data.ReadByte();
+            Flags = (ArtPollFlags) data.ReadByte();
         }
 
         public override void WriteData(ArtNetBinaryWriter data)
         {
             base.WriteData(data);
 
-            data.Write(TalkToMe);
-            data.Write((byte)0);
+            data.Write((byte)Flags);
+            data.Write((byte)0);    // DiagPriority
+            data.Write((short)0);   // TargetPortAddressTop
+            data.Write((short)0);   // TargetPortAddressBottom
         }
 
     }

@@ -1,6 +1,6 @@
 ﻿namespace ArtNet.Enums
 {
-    public enum ArtNetOpCodes
+    public enum ArtNetOpCodes : ushort
     {
         None = 0,
         Poll = 0x20,
@@ -12,15 +12,4 @@
         Rdm = 0x83,
         RdmSub = 0x84,
     }
-
-    public enum ArtNetStyles
-    {
-        StNode = 0x00,
-        StServer = 0x01,
-        StMedia = 0x02,
-        StRoute = 0x03,
-        StBackup = 0x04,
-        StConfig = 0x05
-    }
-
 }
